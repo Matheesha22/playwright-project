@@ -26,7 +26,7 @@ export class LoginPage {
             await this.LoginBtn.click();
         }
 
-        
+
     
 }
 
