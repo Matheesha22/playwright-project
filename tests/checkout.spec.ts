@@ -1,18 +1,17 @@
 import { test, expect } from '@playwright/test';
-import { LoginPage } from '../pages/LoginPage';
-import { ProductsPage } from '../pages/ProductsPage';
+import { LoginPage} from '../pages/LoginPage';
+import {ProductPage} from '../pages/ProductPage';
 
-test('user can add item to cart', async ({ page }) => {
+test('user can add item to cart and proceed to checkout', async ({ page }) => {
     const login = new LoginPage(page);
-    const products = new ProductsPage(page);
+    const product = new ProductPage(page);
 
     await login.goto();
-    await login.login("standard_user", "secret_sauce");
+    await login.login('standard_user','secret_sauce');
+    await product.addFirstItemAddToCart();
+    
+    await expect (product.cartBadge).toHaveText('1');
 
-    await products.addFirstItemToCart();
-    await expect(products.cartBadge).toHaveText('1');
-
-    await products.goToCart();
+    await product.goToCart();
     await expect(page).toHaveURL(/cart/);
-
-})
+});
